@@ -23,3 +23,16 @@ export function getRelativeTime(date: Date | string): string {
   }
   return 'Just now';
 }
+
+export const hexToRgba = (hex: string, alpha: number = 100): string => {
+  // Remove the '#' if present
+  hex = hex.replace('#', '')
+
+  // Extract red, green, blue
+  const r = parseInt(hex.substring(0, 2), 16)
+  const g = parseInt(hex.substring(2, 4), 16)
+  const b = parseInt(hex.substring(4, 6), 16)
+
+  // Return in rgba format
+  return `rgba(${r}, ${g}, ${b}, ${alpha / 100})`
+}

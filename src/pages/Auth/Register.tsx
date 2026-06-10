@@ -4,6 +4,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { UserForm } from '@/types/auth'
 import { registerUser } from '@/services';
 import LabeledInput from '@/components/LabeledInput';
+import { handleError } from '@/utils';
+import { toast } from 'react-toastify';
 
 export default function Register() {
 
@@ -23,14 +25,15 @@ export default function Register() {
     e.preventDefault();
     try {
       if (formData.username === '' || formData.email === '' || formData.password === '' || formData.password !== formData.confirmPassword) {
-        alert('Invalid Info!')
+        toast.warning('Invalid Information', {hideProgressBar: true});
         return
       }
+      
       await registerUser(formData)
       alert('User registered successfully')
       navigate('/login')
     } catch(err) {
-      console.log(err);
+      handleError(err);
     }
   }
 

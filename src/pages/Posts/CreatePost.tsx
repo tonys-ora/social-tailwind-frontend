@@ -1,38 +1,39 @@
 import React, {useState} from 'react'
 import { useNavigate } from 'react-router-dom';
 
-// import './CreatePost.css'
 import { createPost } from '@/services';
+import { handleError } from '@/utils';
+import { toast } from 'react-toastify';
 
 export default function CreatePost() {
   const [content, setContent] = useState('');
   const [userId, setUserId] = useState<string | null>(localStorage.getItem('userId'))
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!userId) {
-      alert('log in first')
+      toast.warn('You must log in', {hideProgressBar: true})
       return
     }
 
     try {
       if (content === '') {
-        alert('content is empty!')
+        toast.warn('Content is empty!', {hideProgressBar: true})
         return
       }
-      createPost({content})
+      await createPost({content})
       setContent('');
-      alert('create post successfully')
+      toast.success('Create post sucessfully!', {hideProgressBar: true})
     } catch(err) {
-      console.log(err)
+      handleError(err)
     }
   }
 
   return (
     <div className='mt-14 mb-6 p-4 w-full max-w-screen-lg justify-self-center'>
       <form 
-        className='px-10 py-5 rounded-lgpx-4 rounded-lg bg-slate-100' 
+        className='px-10 py-5 rounded-lgpx-4 rounded-3xl bg-slate-100' 
         onSubmit={handleSubmit}
         >
         <label htmlFor="comment" className="block mb-4 text-xl font-medium text-gray-600">

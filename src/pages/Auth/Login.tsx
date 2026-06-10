@@ -1,11 +1,12 @@
 import {useState} from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 import LabeledInput from '@/components/LabeledInput'
 import { loginUser } from '@/services'
+import { handleError } from '@/utils'
 import { type EmailPassword } from '@/types/user'
 
-import { toast } from 'react-toastify'
 
 export default function Login() {
 
@@ -23,20 +24,19 @@ export default function Login() {
     e.preventDefault();
     try {
       if (formData.email === '' || formData.password === '') {
-        toast.warning('Invalid Info!');
-        // alert('Invalid Info!');
+        toast.warning('Invalid Information', {hideProgressBar: true});
         return;
       }
+      
       const data = await loginUser(formData);
-      // toast.success('Log in successfully');
       localStorage.setItem('token', data.token);
       localStorage.setItem('userId', data.userId);
       localStorage.setItem('email', data.email);
       localStorage.setItem('username', data.username);
-      alert('User loggedin successfully');
+
       navigate('/');
     } catch(err) {
-      console.log(err);
+      handleError(err)
     }
   }
 

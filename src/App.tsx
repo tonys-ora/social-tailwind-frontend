@@ -1,6 +1,6 @@
 
 import { RouterProvider } from 'react-router'
-import { ThemedToastContainer } from './components/core/ThemedToastContainer'
+import { ThemedToastContainer } from './components/Core/ThemedToastContainer'
 
 import routes from '@/routes'
 

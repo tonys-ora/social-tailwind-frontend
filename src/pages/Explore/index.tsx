@@ -4,6 +4,7 @@ import { fetchExploreUsers, followUser, unFollowUser } from '@/services';
 import { UserCardItem } from '@/components/UserCardItem';
 import {UserCard} from '@/types'
 import { useNavigate } from 'react-router-dom';
+import { handleError } from '@/utils';
 
 export default function Explore() {
 
@@ -16,7 +17,7 @@ export default function Explore() {
       const response = await followUser(userId);
       setUsers((prevUsers) => prevUsers.map((user) => user._id === userId ? {...user, isFollowing: true, followerCount: user.followerCount + 1} : user));
     } catch (e) {
-      console.log(e);
+      handleError(e);
     }
   }, [])
 
@@ -25,7 +26,7 @@ export default function Explore() {
       await unFollowUser(userId);
       setUsers((prevUsers) => prevUsers.map((user) => user._id === userId ? {...user, isFollowing: false, followerCount: user.followerCount - 1} : user));
     } catch (e) {
-      console.log(e);
+      handleError(e);
     }
   }, [])
 
@@ -39,11 +40,10 @@ export default function Explore() {
       const fetchUsers = async () => {
         const result = await fetchExploreUsers()
         setUsers(() => result)
-        console.log('users', result)
       }
       fetchUsers()
     } catch(e) {
-      console.log(e)
+      handleError(e)
     }
   }, [userId, navigate]);
 

@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
+import { toast } from 'react-toastify';
 
-import { PostDate } from '../core/PostDate';
+import { PostDate } from '../Core/PostDate';
 import { type PostType } from '@/types';
 import { commentOnPost, likePost } from '@/services';
-// import { likePost, commentOnPost } from '../services/api';
+import { handleError } from '@/utils';
 
 export function Post({post} : {post: PostType}) {
 
@@ -16,36 +17,39 @@ export function Post({post} : {post: PostType}) {
   const handleLike = async () => {
     try {
       if (!user) {
-        alert('log in first')
+        toast.warn('You must log in')
         return
       }
       if (post.user._id === user) {
-        alert("You can't like your post")
+        toast.warn("You can't like your post")
         return
       }
+
       const response = await likePost(post._id)
       setLikes((prevVal) => (prevVal as number) + 1)
-      alert('like added successfully')
     } catch(e) {
-      console.log(e)
+      handleError(e)
     }
   }
 
   const handleComment = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     try {
+
       if (!user) {
-        alert('log in first')
+        toast.warn('You must log in', {hideProgressBar: true})
         return
       }
+      
       if (commentInput === '') {
-        alert('commment is empty')
+        toast.warn('Comment is empty!', {hideProgressBar: true})
         return
       }
+
       const newPost = await commentOnPost(post._id, {content: commentInput})
       setCommentInput(() => '')
       setComments(() => newPost.comments)
-      alert('comment successfully')
+      toast.success('comment successfully', {hideProgressBar: true})
     } catch (e) {
       console.log(e)
     }
@@ -56,7 +60,7 @@ export function Post({post} : {post: PostType}) {
   }
 
   return (
-    <div className="p-10 space-y-6 bg-slate-50">
+    <div className="p-10 space-y-6 bg-slate-100 rounded-3xl">
   
       <article className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 transition-all duration-100 hover:shadow-xl ease-out">
         <div className="flex items-center space-x-4 mb-4">
@@ -92,6 +96,7 @@ export function Post({post} : {post: PostType}) {
           <textarea 
             className="w-full p-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-slate-700 resize-none" rows={3} placeholder="Join the discussion..."
             onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {setCommentInput(e.target.value)}}
+            value={commentInput}
             ></textarea>
           <div className="flex justify-end mt-2">
             <button className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition shadow-sm" onClick={handleComment}>Comment</button>

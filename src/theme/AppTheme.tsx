@@ -20,7 +20,7 @@ export const AppTheme = (props: AppThemeProps) => {
           cssVarPrefix: 'template'
         },
         colorSchemes,
-        defaultColorScheme: 'dark',
+        defaultColorScheme: 'light',
         typography,
         shadows,
         shape,
@@ -30,7 +30,7 @@ export const AppTheme = (props: AppThemeProps) => {
   )
 
   return (
-    <ThemeProvider defaultMode='dark' theme={theme} disableTransitionOnChange>
+    <ThemeProvider defaultMode='light' theme={theme} disableTransitionOnChange>
       <CssBaseline />
       {children}
     </ThemeProvider>

@@ -1,18 +1,23 @@
 import {useEffect, useState} from 'react'
 
 import { fetchPosts } from '@/services'
+import {Post} from '@/components/posts';
+import { handleError } from '@/utils';
 
 import { PostType } from '@/types'
 
-import {Post} from '@/components/posts';
 
 export default function Feed() {
   const [posts, setPosts] = useState<PostType[]>([]);
 
   useEffect(() => {
     const getPosts = async () => {
-      const data = await fetchPosts();
-      setPosts(() => data);
+      try {
+        const data = await fetchPosts();
+        setPosts(() => data);
+      } catch(err) {
+        handleError(err)
+      }
     }
     getPosts();
   }, [])

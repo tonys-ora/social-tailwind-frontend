@@ -60,7 +60,7 @@ export function Post({post} : {post: PostType}) {
   }
 
   return (
-    <div className="p-10 space-y-6 bg-slate-100 rounded-3xl">
+    <div className="lg:p-10 p-3 space-y-6 bg-slate-100 rounded-3xl">
   
       <article className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 transition-all duration-100 hover:shadow-xl ease-out">
         <div className="flex items-center space-x-4 mb-4">
@@ -71,7 +71,7 @@ export function Post({post} : {post: PostType}) {
         </div>
       
       {/* <h1 className="text-2xl font-bold text-slate-900 mb-3">{post.title}</h1> */}
-      <p className="text-slate-600 leading-relaxed mb-6">
+      <p className="text-slate-600 leading-relaxed mb-6 break-words">
         {post.content}
       </p>
       
@@ -118,7 +118,7 @@ export function Post({post} : {post: PostType}) {
                   </div>
                   {/* <button className="text-slate-400 hover:text-slate-600"><svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"></path></svg></button> */}
                 </div>
-                <p className="text-slate-600 text-sm">{comment.content}</p>
+                <p className="text-slate-600 text-sm break-words">{comment.content}</p>
                 <div className="flex items-center space-x-4 mt-3 text-xs">
                   {/* <button className="flex items-center space-x-1 text-slate-500 hover:text-indigo-600 font-medium"><span>👍 12</span></button> */}
                   {/* <button className="text-slate-500 hover:text-slate-800 font-medium">Reply</button> */}

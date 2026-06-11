@@ -10,12 +10,12 @@ interface UserCardItemProps {
 
 export const UserCardItem : FC<UserCardItemProps> = memo(({ user, handleFollow, handleUnFollow }) => {
   return (
-    <li className='px-5 py-2 w-1/2 overflow-hidden' 
+    <li className='px-5 py-2 lg:w-1/2 w-full overflow-hidden' 
       key={user.email}
     >
-      <div className='rounded-2xl bg-white shadow-lg p-4 mb-5 flex flex-col items-start transition-all duration-100 hover:-translate-y-1 hover:shadow-xl ease-out' >
-        <p className='font-bold text-2xl mb-2'>{user.username}</p>
-        <p className='text-gray-800 text-lg'>{user.email}</p>
+      <div className='min-w-0 w-full rounded-2xl bg-white shadow-lg p-4 mb-5 flex flex-col items-start transition-all duration-100 hover:-translate-y-1 hover:shadow-xl ease-out' >
+        <p className='truncate font-bold text-2xl mb-2 w-full'>{user.username}</p>
+        <p className='truncate whitespace-normal text-gray-800 text-lg w-full'>{user.email}</p>
         <p className='text-gray-600 text-sm'>Followers: {user.followerCount}</p>
         <p className='text-gray-600 mb-2 text-sm'>Following: {user.followingCount}</p>
         {user.isFollowing ? (

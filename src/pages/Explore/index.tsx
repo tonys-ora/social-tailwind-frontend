@@ -49,9 +49,9 @@ export default function Explore() {
 
   
   return (
-    <div className='mt-6 flex justify-center items-center flex-col max-w-screen-lg justify-self-center h-full'>
+    <div className='mt-6 flex justify-center items-center flex-col max-w-screen-lg justify-self-center h-full w-full'>
       <h2 className='text-4xl font-bold mb-5 text-gray-500'> Explore Users </h2>    
-      <ul className='flex flex-wrap'>
+      <ul className='flex flex-wrap w-full'>
         {
           users.map((user : UserCard) => (
             <UserCardItem key={user._id} user={user} handleFollow={handleFollow} handleUnFollow={handleUnFollow} />

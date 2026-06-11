@@ -1,7 +1,8 @@
-import { memo, useState } from 'react'
+import React, { memo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
 import { headerNavigations as navigations } from '@/constants/header'
+import AppIcon, { ICONS_MAP, IconType } from '@/components/Core/AppIcon'
 import { PopoverGroup } from '@headlessui/react'
 
 const Header = () => {
@@ -18,9 +19,10 @@ const Header = () => {
   return (
     <header className='bg-white'>
       <nav aria-label='Global' className='mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8'>
+
         <div className='flex lg:flex-1'>
           <Link to='/' className='-m-1.5 p-1.5'>
-            <span className='sr-only'>Your Company</span>
+            <span className='sr-only'>Company</span>
             <img
               alt=''
               src='https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600'
@@ -34,25 +36,28 @@ const Header = () => {
             <Link
               key={nav.title}
               to={nav.link}
-              className='text-base font-semibold text-gray-900'
+              className='text-lg font-semibold text-gray-900'
             >
               {nav.title}
             </Link>
           ))}
         </PopoverGroup>
         
-        <div className='hidden lg:flex lg:flex-1 lg:justify-end'>
+        <div className='hidden lg:flex lg:flex-1 lg:justify-end lg: align-baseline'>
           {
             user ?
               <>
-                <p className='text-base font-semibold text-gray-900 mr-5'>{user}</p>
-                <p className='text-base font-semibold text-gray-900 cursor-pointer' onClick={handleLogOut}>
-                  Log out <span aria-hidden='true'>&rarr;</span>
+                <AppIcon name='logout' />
+                <p className='text-lg font-semibold text-gray-900 ml-1 cursor-pointer' onClick={handleLogOut}>
+                  Log out
                 </p>
               </>
-            : <Link to='/login' className='text-base font-semibold text-gray-900'>
-              Log in <span aria-hidden='true'>&rarr;</span>
+            : <>
+            <AppIcon name='user' />
+            <Link to='/login' className='text-lg font-semibold text-gray-900 ml-1'>
+              Log in
             </Link>
+            </>
           }
         </div>
       </nav>

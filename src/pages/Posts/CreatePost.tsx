@@ -33,10 +33,10 @@ export default function CreatePost() {
   return (
     <div className='mt-14 mb-6 lg:p-4 w-full max-w-screen-lg justify-self-center'>
       <form 
-        className='lg:px-10 px-5 py-5 rounded-3xl bg-slate-100' 
+        className='lg:px-10 px-5 py-5 rounded-3xl bg-white border border-slate-200' 
         onSubmit={handleSubmit}
         >
-        <label htmlFor="comment" className="block mb-4 text-xl font-medium text-gray-600">
+        <label htmlFor="comment" className="block mb-4 text-xl font-medium text-gray-800">
           New Post
         </label>
         <textarea name='content'

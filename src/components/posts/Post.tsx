@@ -12,7 +12,7 @@ export function Post({post} : {post: PostType}) {
   const [comments, setComments] = useState(post.comments)
   const [commentInput, setCommentInput] = useState('')
   const [showComments, setShowComments] = useState(false)
-  const [user, setUser] = useState<string | null>(localStorage.getItem('userId'))
+  const user = localStorage.getItem('userId')
 
   const handleLike = async () => {
     try {
@@ -60,9 +60,9 @@ export function Post({post} : {post: PostType}) {
   }
 
   return (
-    <div className="lg:p-10 p-3 space-y-6 bg-slate-100 rounded-3xl">
+    <div className="lg:p-5 p-3 space-y-6 bg-white rounded-2xl border border-slate-200 transition-all duration-100 hover:shadow-xl ease-out">
   
-      <article className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 transition-all duration-100 hover:shadow-xl ease-out">
+      <article className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 ">
         <div className="flex items-center space-x-4 mb-4">
           <div>
             <h2 className="text-lg font-semibold text-slate-800">{post.user.username}</h2>
@@ -92,7 +92,7 @@ export function Post({post} : {post: PostType}) {
       <div className="space-y-4">
         <h3 className="text-lg font-bold text-slate-800 px-1">Discussion ({comments?.length})</h3>
 
-        <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 transition-all duration-100 hover:shadow-xl ease-out">
+        <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
           <textarea 
             className="w-full p-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-slate-700 resize-none" rows={3} placeholder="Join the discussion..."
             onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {setCommentInput(e.target.value)}}
@@ -108,7 +108,7 @@ export function Post({post} : {post: PostType}) {
           comments?.map((comment) => (
             <div className="relative pl-6" key={comment._id}>
               <div className="absolute left-0 top-0 bottom-0 w-px bg-slate-300 hover:bg-slate-400 transition cursor-pointer"></div>
-              <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 ml-2 transition-all duration-100 hover:shadow-xl ease-out">
+              <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 ml-2">
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center space-x-3">
                     <div>

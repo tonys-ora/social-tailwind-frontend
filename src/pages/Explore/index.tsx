@@ -19,7 +19,8 @@ export default function Explore() {
   const debouncedQuery = useDebounce<string>(searchQuery, 300);
   const navigate = useNavigate();
 
-  const handleFollow = useCallback(async (userId: string, stateFunc: React.Dispatch<React.SetStateAction<boolean>>) => {
+  const handleFollow = useCallback(async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, userId: string, stateFunc: React.Dispatch<React.SetStateAction<boolean>>) => {
+    e.stopPropagation();
     stateFunc(true);
     try {
       const response = await followUser(userId);
@@ -30,7 +31,8 @@ export default function Explore() {
     stateFunc(false)
   }, [])
 
-  const handleUnFollow = useCallback(async (userId: string, stateFunc: React.Dispatch<React.SetStateAction<boolean>>) => {
+  const handleUnFollow = useCallback(async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, userId: string, stateFunc: React.Dispatch<React.SetStateAction<boolean>>) => {
+    e.stopPropagation();
     stateFunc(true);
     try {
       await unFollowUser(userId)

@@ -25,7 +25,8 @@ export default function Login() {
     try {
       if (formData.email === '' || formData.password === '') {
         toast.warning('Invalid Information', {hideProgressBar: true});
-        return;
+        
+return;
       }
       
       const data = await loginUser(formData);

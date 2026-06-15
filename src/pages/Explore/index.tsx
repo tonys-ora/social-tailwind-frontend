@@ -13,7 +13,7 @@ import { useDebounce } from '@/hooks';
 export default function Explore() {
 
   const [users, setUsers] = useState<UserCard[]>([]);
-  const [userId, setUserId] = useState<string | null>(localStorage.getItem('userId'))
+  const [userId, ] = useState<string | null>(localStorage.getItem('userId'))
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const debouncedQuery = useDebounce<string>(searchQuery, 300);
@@ -23,7 +23,7 @@ export default function Explore() {
     e.stopPropagation();
     stateFunc(true);
     try {
-      const response = await followUser(userId);
+      await followUser(userId);
       setUsers((prevUsers) => prevUsers.map((user) => user._id === userId ? {...user, isFollowing: true, followerCount: user.followerCount + 1} : user));
     } catch (e) {
       handleError(e)

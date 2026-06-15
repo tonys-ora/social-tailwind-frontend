@@ -1,4 +1,3 @@
-import Entity from "./entity"
 
 export interface Email {
   email: string

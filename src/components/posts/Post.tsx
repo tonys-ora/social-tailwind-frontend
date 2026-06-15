@@ -21,11 +21,11 @@ export function Post({post} : {post: PostType}) {
     try {
       if (requireLogin(navigate)) return 
       if (post.user._id === user) {
-        toast.warn("You can't like your post")
-        return
+        toast.warn("You can't like your post")  
+        
+return
       }
-
-      const response = await likePost(post._id)
+      await likePost(post._id)
       setLikes((prevVal) => (prevVal as number) + 1)
     } catch(e) {
       handleError(e)
@@ -39,7 +39,8 @@ export function Post({post} : {post: PostType}) {
       
       if (commentInput === '') {
         toast.warn('Comment is empty!', {hideProgressBar: true})
-        return
+        
+return
       }
 
       const newPost = await commentOnPost(post._id, {content: commentInput})
@@ -51,7 +52,7 @@ export function Post({post} : {post: PostType}) {
     }
   }
 
-  const handleShowComments = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleShowComments = () => {
     setShowComments((prev) => !prev);
   }
 
@@ -62,7 +63,7 @@ export function Post({post} : {post: PostType}) {
   return (
     <div className="lg:p-5 p-3 space-y-6 bg-white rounded-2xl border border-slate-200 transition-all duration-100 hover:shadow-xl ease-out">
   
-      <article className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 ">
+      <article className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
         <div className="flex items-center space-x-4 mb-4">
           <div>
             <h2 className="text-lg font-semibold text-slate-800 cursor-pointer" onClick={() => handleLinkUser(post.user._id)}>{post.user.username}</h2>
@@ -112,7 +113,7 @@ export function Post({post} : {post: PostType}) {
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center space-x-3">
                     <div>
-                      <span className="font-semibold text-slate-800 text-sm mr-2">{comment.user.username}</span>
+                      <span className="font-semibold text-slate-800 text-sm mr-2 cursor-pointer" onClick={() => handleLinkUser(comment.user._id)}>{comment.user.username}</span>
                       <PostDate postedAt={comment.createdAt}/>
                     </div>
                   </div>

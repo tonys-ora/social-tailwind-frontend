@@ -26,7 +26,8 @@ export default function Register() {
     try {
       if (formData.username === '' || formData.email === '' || formData.password === '' || formData.password !== formData.confirmPassword) {
         toast.warning('Invalid Information', {hideProgressBar: true});
-        return
+        
+return
       }
       
       await registerUser(formData)

@@ -6,16 +6,16 @@ import { toast } from 'react-toastify';
 
 export default function CreatePost() {
   const [content, setContent] = useState('')
-  const userId = localStorage.getItem('userId')
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if(requireLogin((s : string) => {})) return
+    if(requireLogin(() => {})) return
 
     try {
       if (content === '') {
         toast.warn('Content is empty!', {hideProgressBar: true})
-        return
+        
+return
       }
       await createPost({content})
       setContent('');

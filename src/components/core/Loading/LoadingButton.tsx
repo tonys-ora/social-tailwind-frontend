@@ -14,8 +14,10 @@ export const LoadingButton: React.FC<ButtonProps> = ({
 }) => {
   return (
     <button
+
       // Automatically disable the button when loading to prevent duplicate submissions
       disabled={disabled || isLoading}
+
       // ARIA attribute informs screen readers that the element is loading
       aria-busy={isLoading}
       className={`

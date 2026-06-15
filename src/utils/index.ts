@@ -9,9 +9,11 @@ export const requireLogin = (navigate: NavigateFunction | ((s : string) => void)
   if (!localStorage.getItem('userId')) {
     toast.warn('Log in first', {hideProgressBar: true})
     navigate('/')
-    return true
+    
+return true
   }
-  return false
+  
+return false
 }
 
 export function getRelativeTime(date: Date | string): string {
@@ -34,10 +36,12 @@ export function getRelativeTime(date: Date | string): string {
     if (Math.abs(diffInSeconds) >= seconds || unit === 'minute') {
       const value = Math.floor(diffInSeconds / seconds);
       const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
-      return rtf.format(-value, unit as Intl.RelativeTimeFormatUnit);
+      
+return rtf.format(-value, unit as Intl.RelativeTimeFormatUnit);
     }
   }
-  return 'Just now';
+  
+return 'Just now';
 }
 
 export const hexToRgba = (hex: string, alpha: number = 100): string => {

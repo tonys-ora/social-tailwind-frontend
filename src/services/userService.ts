@@ -1,7 +1,7 @@
 import { API_ENDPOINTS } from '@/configs'
 import apiRequest from '@/lib/axios'
 
-import { UserCard } from '@/types'
+import { UserCard, UserProfileRes } from '@/types'
 
 export const fetchExploreUsers = async () : Promise<UserCard[]> => {
   return apiRequest({
@@ -11,7 +11,15 @@ export const fetchExploreUsers = async () : Promise<UserCard[]> => {
   })
 }
 
-export const followUser = async (userId: string) => {
+export const fetchUserById = async (userId: string): Promise<UserProfileRes> => {
+  return apiRequest({
+    method: 'GET',
+    url: API_ENDPOINTS.USER.FETCH_USER_PROFILE(userId),
+    errorMessage: 'Failed to fetch user profile'
+  })
+}
+
+export const followUser = async (userId: string): Promise<{user: UserProfileRes, message: string}> => {
   return apiRequest({
     method: 'POST',
     url: API_ENDPOINTS.USER.FOLLOW_USER(userId),
@@ -19,7 +27,7 @@ export const followUser = async (userId: string) => {
   })
 }
 
-export const unFollowUser = async (userId: string) => {
+export const unFollowUser = async (userId: string): Promise<{user: UserProfileRes, message: string}> => {
   return apiRequest({
     method: 'POST',
     url: API_ENDPOINTS.USER.UNFOLLOW_USER(userId),

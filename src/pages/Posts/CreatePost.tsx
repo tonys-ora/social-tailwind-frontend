@@ -1,14 +1,12 @@
 import React, {useState} from 'react'
-import { useNavigate } from 'react-router-dom';
 
 import { createPost } from '@/services';
 import { handleError } from '@/utils';
 import { toast } from 'react-toastify';
 
 export default function CreatePost() {
-  const [content, setContent] = useState('');
-  const [userId, setUserId] = useState<string | null>(localStorage.getItem('userId'))
-  const navigate = useNavigate();
+  const [content, setContent] = useState('')
+  const userId = localStorage.getItem('userId')
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

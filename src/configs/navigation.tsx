@@ -5,5 +5,7 @@ export const routers = {
   Register: '/register',
   Explore: '/explore',
   Feed: '/feed',
-  CreatePost: '/create'
+  CreatePost: '/create',
+  Profile: '/profile/',
+  UserProfile: '/profile/:userId'
 }

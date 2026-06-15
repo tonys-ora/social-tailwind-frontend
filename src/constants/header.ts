@@ -10,5 +10,9 @@ export const headerNavigations = [
   {
     title: 'Create Post',
     link: '/create'
+  },
+  {
+    title: 'Profile',
+    link: '/profile'
   }
 ]

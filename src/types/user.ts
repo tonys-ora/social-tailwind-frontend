@@ -1,3 +1,4 @@
+import Entity from "./entity"
 
 export interface Email {
   email: string
@@ -29,4 +30,12 @@ export interface User {
   username: string
   followers: UserSummary[]
   following: UserSummary[]
+}
+
+export interface UserProfileRes {
+  _id: string
+  email: string
+  username: string
+  followers: string[]
+  following: string[]
 }

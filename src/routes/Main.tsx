@@ -7,6 +7,7 @@ const Register = lazy(() => import('@/pages/Auth/Register'))
 const Explore = lazy(() => import('@/pages/Explore'))
 const Feed = lazy(() => import('@/pages/Feed'))
 const CreatePost = lazy(() => import('@/pages/Posts/CreatePost'))
+const ProfileCard = lazy(() => import('@/pages/Profile'))
 
 export const MainRoutes = [
   {
@@ -24,5 +25,13 @@ export const MainRoutes = [
   {
     path: routers.CreatePost,
     element: <CreatePost />
-  }
+  },
+  {
+    path: routers.Profile,
+    element: <ProfileCard />
+  },
+  {
+    path: routers.UserProfile,
+    element: <ProfileCard />
+  }, 
 ]

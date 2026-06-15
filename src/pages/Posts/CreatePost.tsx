@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 
 import { createPost } from '@/services';
-import { handleError } from '@/utils';
+import { handleError, requireLogin } from '@/utils';
 import { toast } from 'react-toastify';
 
 export default function CreatePost() {
@@ -10,10 +10,7 @@ export default function CreatePost() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!userId) {
-      toast.warn('You must log in', {hideProgressBar: true})
-      return
-    }
+    if(requireLogin((s : string) => {})) return
 
     try {
       if (content === '') {

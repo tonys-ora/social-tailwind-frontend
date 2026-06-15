@@ -30,6 +30,7 @@ export default function Feed() {
     loading ? <Spinner />
     : <article className='mt-6 flex flex-col-reverse gap-4 w-full max-w-screen-lg justify-self-center'>
       {
+        
         posts.map((post) => <Post key={post._id} post={post} />)
       }
     </article>

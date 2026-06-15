@@ -1,17 +1,22 @@
-import React, {useCallback, useEffect, useState} from 'react'
+import React, {useCallback, useEffect, useState, useMemo} from 'react'
 import { useNavigate } from 'react-router-dom';
 
 import { fetchExploreUsers, followUser, unFollowUser } from '@/services';
 import { UserCardItem } from '@/components/UserCardItem';
+import { SearchBar } from "@/components/Core/SearchBar";
 import { Spinner } from '@/components/Core/Loading';
 import {UserCard} from '@/types';
-import { handleError } from '@/utils';
+import { handleError, requireLogin } from '@/utils';
+
+import { useDebounce } from '@/hooks';
 
 export default function Explore() {
 
   const [users, setUsers] = useState<UserCard[]>([]);
   const [userId, setUserId] = useState<string | null>(localStorage.getItem('userId'))
   const [loading, setLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const debouncedQuery = useDebounce<string>(searchQuery, 300);
   const navigate = useNavigate();
 
   const handleFollow = useCallback(async (userId: string, stateFunc: React.Dispatch<React.SetStateAction<boolean>>) => {
@@ -37,10 +42,7 @@ export default function Explore() {
   }, [])
 
   useEffect(() => {
-    if (!userId) {
-      navigate('/login')
-      return
-    }
+    if (requireLogin(navigate)) return
 
     try {
       const fetchUsers = async () => {
@@ -54,16 +56,33 @@ export default function Explore() {
       handleError(e)
     }
   }, [userId, navigate]);
+  
+  const filteredUsers = useMemo(() => {
+    if (!debouncedQuery.trim()) return users;
+    
+    return users.filter((user) =>
+      user.username.toLowerCase().includes(debouncedQuery.toLowerCase()) ||
+      user.email.toLowerCase().includes(debouncedQuery.toLowerCase())
+    );
+  }, [debouncedQuery, users]);
 
   return (
     <div className='mt-6 flex justify-center items-center flex-col max-w-screen-lg justify-self-center h-full w-full'>
       <h2 className='text-4xl font-bold mb-5 text-gray-500'> Explore Users </h2>    
+      <SearchBar 
+        value={searchQuery} 
+        onChange={setSearchQuery} 
+        placeholder="Search by name or email..." 
+      />
       {loading ? <Spinner />
       : <ul className='flex flex-wrap w-full'>
-        {
-          users.map((user : UserCard) => (
+        { filteredUsers.length > 0 ? (
+          filteredUsers.map((user : UserCard) => (
             <UserCardItem key={user._id} user={user} handleFollow={handleFollow} handleUnFollow={handleUnFollow} />
           ))
+          ): (
+            <li style={{ color: "#777", fontStyle: "italic" }}>No results found</li>
+          )
         }
       </ul>
       }

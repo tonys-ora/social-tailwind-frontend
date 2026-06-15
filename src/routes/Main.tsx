@@ -2,8 +2,6 @@ import { lazy } from 'react'
 
 import {routers} from '@/configs'
 
-const Login = lazy(() => import('@/pages/Auth/Login'))
-const Register = lazy(() => import('@/pages/Auth/Register'))
 const Explore = lazy(() => import('@/pages/Explore'))
 const Feed = lazy(() => import('@/pages/Feed'))
 const CreatePost = lazy(() => import('@/pages/Posts/CreatePost'))

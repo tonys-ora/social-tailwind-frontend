@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
-import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 import { PostDate } from '../Core/PostDate';
 import { type PostType } from '@/types';
 import { commentOnPost, likePost } from '@/services';
-import { handleError } from '@/utils';
+import { handleError, requireLogin } from '@/utils';
+
+import { toast } from 'react-toastify';
 
 export function Post({post} : {post: PostType}) {
 
@@ -13,13 +15,11 @@ export function Post({post} : {post: PostType}) {
   const [commentInput, setCommentInput] = useState('')
   const [showComments, setShowComments] = useState(false)
   const user = localStorage.getItem('userId')
+  const navigate = useNavigate();
 
   const handleLike = async () => {
     try {
-      if (!user) {
-        toast.warn('You must log in')
-        return
-      }
+      if (requireLogin(navigate)) return 
       if (post.user._id === user) {
         toast.warn("You can't like your post")
         return
@@ -35,11 +35,7 @@ export function Post({post} : {post: PostType}) {
   const handleComment = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     try {
-
-      if (!user) {
-        toast.warn('You must log in', {hideProgressBar: true})
-        return
-      }
+      if (requireLogin(navigate)) return
       
       if (commentInput === '') {
         toast.warn('Comment is empty!', {hideProgressBar: true})
@@ -59,13 +55,17 @@ export function Post({post} : {post: PostType}) {
     setShowComments((prev) => !prev);
   }
 
+  const handleLinkUser = (userId: string) => {
+    navigate(`/profile/${userId}`)
+  }
+
   return (
     <div className="lg:p-5 p-3 space-y-6 bg-white rounded-2xl border border-slate-200 transition-all duration-100 hover:shadow-xl ease-out">
   
       <article className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 ">
         <div className="flex items-center space-x-4 mb-4">
           <div>
-            <h2 className="text-lg font-semibold text-slate-800">{post.user.username}</h2>
+            <h2 className="text-lg font-semibold text-slate-800 cursor-pointer" onClick={() => handleLinkUser(post.user._id)}>{post.user.username}</h2>
             <PostDate postedAt={post.createdAt} />
           </div>
         </div>

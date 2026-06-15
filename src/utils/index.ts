@@ -1,7 +1,17 @@
+import { NavigateFunction } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 export const localStorageGetItem = (key: string, defaultValue = '') => {
   return localStorage.getItem(key) || defaultValue
+}
+
+export const requireLogin = (navigate: NavigateFunction | ((s : string) => void)) => {
+  if (!localStorage.getItem('userId')) {
+    toast.warn('Log in first', {hideProgressBar: true})
+    navigate('/')
+    return true
+  }
+  return false
 }
 
 export function getRelativeTime(date: Date | string): string {

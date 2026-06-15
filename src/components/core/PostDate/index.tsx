@@ -1,4 +1,5 @@
 import React from 'react'
+import { format } from 'date-fns'
 
 import {getRelativeTime} from '@/utils'
 
@@ -16,7 +17,7 @@ export const PostDate: React.FC<PostDatePorps> = ({ postedAt }) => {
         dateTime={postedAt}
         className="text-sm text-slate-500 dark:text-slate-400 tracking-tight mr-2"
       >
-        {date.toISOString().split('T')[0]}
+        {format(date, 'yyyy/MM/dd HH:mm')}
       </time>
       <time 
         dateTime={postedAt}

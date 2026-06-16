@@ -1,11 +1,12 @@
 import {useState} from 'react'
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import { UserForm } from '@/types/auth'
 import { registerUser } from '@/services';
 import LabeledInput from '@/components/LabeledInput';
 import { handleError } from '@/utils';
-import { toast } from 'react-toastify';
+import { dispatch, login } from '@/store';
 
 export default function Register() {
 
@@ -26,13 +27,15 @@ export default function Register() {
     try {
       if (formData.username === '' || formData.email === '' || formData.password === '' || formData.password !== formData.confirmPassword) {
         toast.warning('Invalid Information', {hideProgressBar: true});
-        
-return
+        return
       }
       
-      await registerUser(formData)
-      alert('User registered successfully')
-      navigate('/login')
+      const data = await registerUser(formData)
+      console.log(data)
+      dispatch(login(data))
+      navigate(`/profile/${data.userId}`)
+      toast.success('Register successfully', {hideProgressBar: true})
+      
     } catch(err) {
       handleError(err);
     }

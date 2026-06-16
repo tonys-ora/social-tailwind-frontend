@@ -1,10 +1,11 @@
-import {useState} from 'react'
+import {useCallback, useState} from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 import LabeledInput from '@/components/LabeledInput'
 import { loginUser } from '@/services'
 import { handleError } from '@/utils'
+import { dispatch, login } from '@/store'
 import { type EmailPassword } from '@/types/user'
 
 
@@ -14,32 +15,28 @@ export default function Login() {
     email: '',
     password: ''
   })
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({...formData, [e.target.name]: e.target.value});
-  }
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({...formData, [e.target.name]: e.target.value})
+  }, [formData])
 
-  const handleSubmit = async (e: React.FormEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+  const handleSubmit = useCallback( async (e: React.FormEvent<HTMLButtonElement>) => {
+    e.preventDefault()
     try {
       if (formData.email === '' || formData.password === '') {
-        toast.warning('Invalid Information', {hideProgressBar: true});
-        
-return;
+        toast.warning('Invalid Information', {hideProgressBar: true})
+        return
       }
       
-      const data = await loginUser(formData);
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('userId', data.userId);
-      localStorage.setItem('email', data.email);
-      localStorage.setItem('username', data.username);
-
-      navigate('/');
+      const data = await loginUser(formData)
+      dispatch(login(data))
+      navigate(`/profile/${data.userId}`)
+      toast.success('Log in successfully', {hideProgressBar: true})
     } catch(err) {
       handleError(err)
     }
-  }
+  }, [formData])
 
   return (
     <>
@@ -65,7 +62,7 @@ return;
               name='email'
               type='email'
               required
-              autoComplete='email'
+              value={formData.email}
               onChange={handleChange}
             />
             <LabeledInput
@@ -74,7 +71,7 @@ return;
               name='password'
               type='password'
               required
-              autoComplete='current-password'
+              value={formData.password}
               onChange={handleChange}
             /> 
 

@@ -4,9 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import { PostDate } from '../Core/PostDate';
 import { type PostType } from '@/types';
 import { commentOnPost, likePost } from '@/services';
-import { handleError, requireLogin } from '@/utils';
+import { handleError } from '@/utils';
 
 import { toast } from 'react-toastify';
+import { useUser } from '@/hooks';
 
 export function Post({post} : {post: PostType}) {
 
@@ -14,16 +15,14 @@ export function Post({post} : {post: PostType}) {
   const [comments, setComments] = useState(post.comments)
   const [commentInput, setCommentInput] = useState('')
   const [showComments, setShowComments] = useState(false)
-  const user = localStorage.getItem('userId')
+  const user = useUser()
   const navigate = useNavigate();
 
   const handleLike = async () => {
     try {
-      if (requireLogin(navigate)) return 
-      if (post.user._id === user) {
+      if (post.user._id === user?.userId) {
         toast.warn("You can't like your post")  
-        
-return
+        return
       }
       await likePost(post._id)
       setLikes((prevVal) => (prevVal as number) + 1)
@@ -35,12 +34,9 @@ return
   const handleComment = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     try {
-      if (requireLogin(navigate)) return
-      
       if (commentInput === '') {
         toast.warn('Comment is empty!', {hideProgressBar: true})
-        
-return
+        return
       }
 
       const newPost = await commentOnPost(post._id, {content: commentInput})

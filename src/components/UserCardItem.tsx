@@ -6,13 +6,12 @@ import { useNavigate } from 'react-router-dom'
 
 interface UserCardItemProps {
   user: UserCard
-  handleFollow: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, userId: string, stateFunc: React.Dispatch<React.SetStateAction<boolean>>) => void
-  handleUnFollow: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, userId: string, stateFunc: React.Dispatch<React.SetStateAction<boolean>>) => void
+  handleFollowReverse: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, userId: string, stateFunc: React.Dispatch<React.SetStateAction<boolean>>, isFollowing: boolean) => void
+  showButton: boolean
 }
 
-export const UserCardItem : FC<UserCardItemProps> = memo(({ user, handleFollow, handleUnFollow }) => {
-  const [following, setFollowing] = useState(false)
-  const [unFollowing, setUnFollowing] = useState(false)
+export const UserCardItem : FC<UserCardItemProps> = memo(({ user, handleFollowReverse, showButton}) => {
+  const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate();
   
   const handleClick = () => {
@@ -32,11 +31,12 @@ export const UserCardItem : FC<UserCardItemProps> = memo(({ user, handleFollow, 
         <p className='truncate whitespace-normal text-gray-800 text-lg w-full'>{user.email}</p>
         <p className='text-gray-600 text-sm'>Followers: {user.followerCount}</p>
         <p className='text-gray-600 mb-2 text-sm'>Following: {user.followingCount}</p>
-        {user.isFollowing ? (
+
+        {showButton && (user.isFollowing ? (
           <LoadingButton
             type='button'
-            isLoading={unFollowing}
-            onClick={(e) => handleUnFollow(e, user._id, setUnFollowing)}
+            isLoading={isLoading}
+            onClick={(e) => handleFollowReverse(e, user._id, setIsLoading, true)}
             className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full' 
           >
             unfollow
@@ -44,13 +44,13 @@ export const UserCardItem : FC<UserCardItemProps> = memo(({ user, handleFollow, 
         ) : (
           <LoadingButton 
             type='button'
-            isLoading={following}
+            isLoading={isLoading}
             className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full' 
-            onClick={(e) => handleFollow(e, user._id, setFollowing)}
+            onClick={(e) => handleFollowReverse(e, user._id, setIsLoading, false)}
           >
             follow
           </LoadingButton>
-        )}
+        ))}
       </div>
     </li>
   )

@@ -5,17 +5,6 @@ export const localStorageGetItem = (key: string, defaultValue = '') => {
   return localStorage.getItem(key) || defaultValue
 }
 
-export const requireLogin = (navigate: NavigateFunction | ((s : string) => void)) => {
-  if (!localStorage.getItem('userId')) {
-    toast.warn('Log in first', {hideProgressBar: true})
-    navigate('/')
-    
-return true
-  }
-  
-return false
-}
-
 export function getRelativeTime(date: Date | string): string {
   const now = new Date();
   const inputDate = typeof date === 'string' ? new Date(date) : date;

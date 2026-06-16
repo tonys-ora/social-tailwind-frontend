@@ -4,5 +4,5 @@ export interface PostType {
   content: string,
   likes?: {_id: string, username: string}[],
   comments?: Omit<PostType, 'likes'>[]
-  createdAt: string
+  createdAt: Date
 }

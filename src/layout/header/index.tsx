@@ -1,24 +1,27 @@
 import React, { memo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 import { headerNavigations as navigations } from '@/constants/header'
 import AppIcon from '@/components/Core/AppIcon'
-
 import {
   Dialog,
   DialogPanel,
   PopoverGroup,
 } from '@headlessui/react'
-import { toast } from 'react-toastify'
+import { useUser } from '@/hooks'
+import { dispatch, logout } from '@/store'
+
+import {UserDropdown, SmallUserDropDown} from './UserDropdown'
 
 const Header = () => {
 
-  const [user, setUser] = useState<string | null>(localStorage.getItem('username'));
+  const [user, setUser] = useState(useUser())
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const navigate = useNavigate();
 
   const handleLogOut = () => {
-    localStorage.clear()
+    dispatch(logout())
     setUser(() => null)
     setMobileMenuOpen(false)
     navigate('/')
@@ -67,10 +70,7 @@ const Header = () => {
           {
             user ?
               <>
-                <AppIcon name='logout' />
-                <p className='text-lg font-semibold text-gray-900 ml-1 cursor-pointer' onClick={handleLogOut}>
-                  Log out
-                </p>
+                <UserDropdown user={user} handleLogOut={handleLogOut}/>
               </>
             : <>
             <AppIcon name='user' />
@@ -119,12 +119,7 @@ const Header = () => {
 
                 {
                   user ?
-                    <p
-                      onClick={handleLogOut}
-                      className='-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50'
-                    >
-                      Log out
-                    </p>
+                    <SmallUserDropDown />
                   : <Link
                       to='/login'
                       className='-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50'

@@ -3,10 +3,11 @@ import apiRequest from '@/lib/axios'
 
 import { UserCard, UserProfileRes } from '@/types'
 
-export const fetchExploreUsers = async () : Promise<UserCard[]> => {
+export const fetchExploreUsers = async (data : {userId: string | undefined}) : Promise<UserCard[]> => {
   return apiRequest({
-    method: 'GET',
+    method: 'POST',
     url: API_ENDPOINTS.USER.FETCH_EXPLORE_USERS,
+    data,
     errorMessage: 'Failed to fetch users'
   })
 }

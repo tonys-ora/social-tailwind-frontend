@@ -10,7 +10,7 @@ const ProfileCard = lazy(() => import('@/pages/Profile'))
 export const MainRoutes = [
   {
     path: routers.Home,
-    element: <Feed />
+    element: <Explore />
   },
   {
     path: routers.Explore,
@@ -23,10 +23,6 @@ export const MainRoutes = [
   {
     path: routers.CreatePost,
     element: <CreatePost />
-  },
-  {
-    path: routers.Profile,
-    element: <ProfileCard />
   },
   {
     path: routers.UserProfile,

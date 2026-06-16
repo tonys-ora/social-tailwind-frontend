@@ -5,38 +5,30 @@ import { fetchExploreUsers, followUser, unFollowUser } from '@/services';
 import { UserCardItem } from '@/components/UserCardItem';
 import { SearchBar } from "@/components/Core/SearchBar";
 import { Spinner } from '@/components/Core/Loading';
-import {UserCard} from '@/types';
-import { handleError, requireLogin } from '@/utils';
+import { useDebounce, useIsLoggedIn, useUser } from '@/hooks';
+import { handleError } from '@/utils';
+import { UserCard } from '@/types';
 
-import { useDebounce } from '@/hooks';
 
 export default function Explore() {
 
-  const [users, setUsers] = useState<UserCard[]>([]);
-  const [userId, ] = useState<string | null>(localStorage.getItem('userId'))
-  const [loading, setLoading] = useState(false);
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const debouncedQuery = useDebounce<string>(searchQuery, 300);
-  const navigate = useNavigate();
-
-  const handleFollow = useCallback(async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, userId: string, stateFunc: React.Dispatch<React.SetStateAction<boolean>>) => {
+  const [users, setUsers] = useState<UserCard[]>([])
+  const [loading, setLoading] = useState(false)
+  const [searchQuery, setSearchQuery] = useState<string>("")
+  
+  const userId = useUser()?.userId
+  const isLoggedIn = useIsLoggedIn()
+  const debouncedQuery = useDebounce<string>(searchQuery, 300)
+  const navigate = useNavigate()
+  
+  const handleFollowReverse = useCallback(async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, userId: string, stateFunc: React.Dispatch<React.SetStateAction<boolean>>, isFollowing: boolean) => {
     e.stopPropagation();
     stateFunc(true);
     try {
-      await followUser(userId);
-      setUsers((prevUsers) => prevUsers.map((user) => user._id === userId ? {...user, isFollowing: true, followerCount: user.followerCount + 1} : user));
-    } catch (e) {
-      handleError(e)
-    }
-    stateFunc(false)
-  }, [])
-
-  const handleUnFollow = useCallback(async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, userId: string, stateFunc: React.Dispatch<React.SetStateAction<boolean>>) => {
-    e.stopPropagation();
-    stateFunc(true);
-    try {
-      await unFollowUser(userId)
-      setUsers((prevUsers) => prevUsers.map((user) => user._id === userId ? {...user, isFollowing: false, followerCount: user.followerCount - 1} : user));
+      await (isFollowing? unFollowUser : followUser)(userId);
+      setUsers((prevUsers) => prevUsers.map((user) => 
+        user._id === userId ? {...user, isFollowing: !isFollowing, followerCount: user.followerCount + (isFollowing?-1:1)} : user)
+      );
     } catch (e) {
       handleError(e)
     }
@@ -44,12 +36,10 @@ export default function Explore() {
   }, [])
 
   useEffect(() => {
-    if (requireLogin(navigate)) return
-
     try {
       const fetchUsers = async () => {
         setLoading(true)
-        const result = await fetchExploreUsers()
+        const result = await fetchExploreUsers({userId})
         setUsers(() => result)
         setLoading(false)
       }
@@ -80,7 +70,8 @@ export default function Explore() {
       : <ul className='flex flex-wrap w-full'>
         { filteredUsers.length > 0 ? (
           filteredUsers.map((user : UserCard) => (
-            <UserCardItem key={user._id} user={user} handleFollow={handleFollow} handleUnFollow={handleUnFollow} />
+            user._id !== userId && 
+              <UserCardItem key={user._id} user={user} showButton={ isLoggedIn} handleFollowReverse={handleFollowReverse}/>
           ))
           ): (
             <li style={{ color: "#777", fontStyle: "italic" }}>No results found</li>

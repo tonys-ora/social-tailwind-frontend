@@ -12,7 +12,7 @@ export const loginUser = async (data: EmailPassword) : Promise<LoginUserRes> => 
   })
 }
 
-export const registerUser = async (data: UserSummary) => {
+export const registerUser = async (data: UserSummary) : Promise<LoginUserRes> => {
   return apiRequest({
     method: 'POST',
     url: API_ENDPOINTS.AUTH.REGISTER,
